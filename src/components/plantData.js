@@ -3,7 +3,6 @@ import useAxios from 'axios-hooks'
 import {
 	makeStyles,
 	CircularProgress,
-	Grid,
 	Typography,
 	Card,
 	CardActionArea,
@@ -25,13 +24,12 @@ const useStyles = makeStyles(theme => ({
 	cardImage: {
 		maxWidth: 500,
 		margin: '20px',
-		display: 'flex',
 	},
 	listIcons: {
 		display: 'flex',
 	},
 	card: {
-		display: 'inline',
+		display: 'inline-block',
 		margin: '20px',
 	},
 	thumbnail: {
@@ -120,9 +118,7 @@ export default function PlantData() {
 				<CircularProgress style={{ marginLeft: '70px', marginTop: '20px' }} />
 			) : (
 				<>
-					<Grid item xs={6} className={classes.card}>
-						{plantList}
-					</Grid>
+					<div className={classes.card}>{plantList}</div>
 				</>
 			)}
 		</div>
