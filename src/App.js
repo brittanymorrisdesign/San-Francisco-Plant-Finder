@@ -68,7 +68,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	cardImage: {
 		maxWidth: 500,
-		margin: '20px',
+		margin: '10px',
 	},
 	listIcons: {
 		display: 'flex',
@@ -80,6 +80,10 @@ const useStyles = makeStyles(theme => ({
 	thumbnail: {
 		height: '350px',
 		width: '100%',
+	},
+	plantCard: {
+		display: 'inline-block',
+		marginTop: '20px',
 	},
 }))
 
@@ -128,7 +132,7 @@ export default function App() {
 							{plantData &&
 								plantData.filter(filterNames).map(plants => {
 									return (
-										<div key={plants.id}>
+										<div key={plants.id} className={classes.plantCard}>
 											<Card className={classes.cardImage}>
 												<CardActionArea>
 													<img
