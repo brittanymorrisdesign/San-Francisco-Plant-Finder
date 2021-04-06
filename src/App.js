@@ -109,7 +109,7 @@ const useStyles = makeStyles(theme => ({
 		marginTop: '5px',
 	},
 	pagination: {
-		textAlign: 'center',
+		margin: '10px',
 	},
 }))
 
@@ -320,7 +320,7 @@ export default function App() {
 									size='large'
 									showFirstButton
 									showLastButton
-									classes={classes.pagination}
+									className={classes.pagination}
 								/>
 							</div>
 							{open && plantInfo}
