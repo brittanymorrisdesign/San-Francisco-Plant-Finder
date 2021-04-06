@@ -135,11 +135,11 @@ export default function App() {
 		)
 	}
 
-	const handleChange = (event, value) => {
+	const handleChange = value => {
 		setPage(value)
 	}
 
-	const handleClickOpen = event => {
+	const handleClickOpen = () => {
 		setOpen(true)
 	}
 
