@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import useAxios from 'axios-hooks'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { SearchBar } from './components/'
 import BackgroundImage from './assets/background-01.jpg'
 import {
@@ -23,12 +23,17 @@ import {
 	IconButton,
 	withStyles,
 } from '@material-ui/core'
-import EcoIcon from '@material-ui/icons/Eco'
-import CloseIcon from '@material-ui/icons/Close'
-import ColorLensIcon from '@material-ui/icons/ColorLens'
-import OpacityIcon from '@material-ui/icons/Opacity'
 import PlantImages from './util/plantImage'
 import Pagination from '@material-ui/lab/Pagination'
+import {
+	LocalFlorist,
+	EmojiNature,
+	WbSunny,
+	Eco,
+	Opacity,
+	ColorLens,
+	Close,
+} from '@material-ui/icons'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -70,7 +75,7 @@ const useStyles = makeStyles(theme => ({
 	loading: {
 		marginLeft: '50%',
 		marginTop: '20px',
-		color: '#707066',
+		color: '#78935d',
 	},
 	cardImage: {
 		maxWidth: 500,
@@ -119,15 +124,29 @@ export default function App() {
 	const [open, setOpen] = useState(false)
 	const itemsPerPage = 9
 	const [page, setPage] = useState(1)
+	const [plantsInfo, setPlantsInfo] = useState([])
+	const [isClicked, setIsClicked] = useState([])
+	const [loadingData, setLoadingData] = useState(false)
 
-	const [{ data: plantData, loading: loadingPlantData }] = useAxios(
-		'https://data.sfgov.org/resource/vmnk-skih.json?$select=*'
-	)
+	useEffect(() => {
+		const fetchPlantData = async () => {
+			setLoadingData(true)
+			try {
+				const { data } = await axios.get(
+					'https://data.sfgov.org/resource/vmnk-skih.json?$select=*'
+				)
+				setLoadingData(false)
+				setPlantsInfo(data)
+			} catch (err) {}
+		}
+		fetchPlantData()
+	}, [])
 
 	const [noOfPages] = useState(
-		Math.ceil(plantData && plantData.length / itemsPerPage)
+		Math.ceil(plantsInfo && plantsInfo.length / itemsPerPage)
 	)
 
+	console.log(plantsInfo)
 	const filterNames = ({ common_name }) => {
 		return (
 			common_name &&
@@ -139,8 +158,10 @@ export default function App() {
 		setPage(value)
 	}
 
-	const handleClickOpen = () => {
+	const handleClickOpen = id => {
 		setOpen(true)
+		setIsClicked(plantsInfo.find(x => x.latin_name))
+		console.log(plantsInfo.find(x => x.latin_name))
 	}
 
 	const handleClose = () => {
@@ -158,7 +179,7 @@ export default function App() {
 						className={classes.closeButton}
 						onClick={onClose}
 					>
-						<CloseIcon />
+						<Close />
 					</IconButton>
 				) : null}
 			</div>
@@ -176,24 +197,54 @@ export default function App() {
 				open={open}
 			>
 				<DialogTitle id='customized-dialog-title' onClose={handleClose}>
-					Modal title
+					{isClicked.common_name}
 				</DialogTitle>
 				<DialogContent dividers>
-					<Typography gutterBottom>
-						Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-						dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-						ac consectetur ac, vestibulum at eros.
-					</Typography>
-					<Typography gutterBottom>
-						Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-						Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor
-						auctor.
-					</Typography>
-					<Typography gutterBottom>
-						Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-						cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-						dui. Donec ullamcorper nulla non metus auctor fringilla.
-					</Typography>
+					<CardContent>
+						<Typography gutterBottom variant='h5' component='h2'>
+							{isClicked.plant_type}
+						</Typography>
+						<Typography variant='body2' color='textSecondary' component='p'>
+							<List>
+								<ListItem>
+									<ListItemAvatar>
+										<Eco />
+									</ListItemAvatar>
+									<ListItemText
+										primary='Type'
+										secondary={isClicked.plant_type}
+									/>
+								</ListItem>
+								<ListItem>
+									<ListItemAvatar>
+										<LocalFlorist />
+									</ListItemAvatar>
+									<ListItemText
+										primary='Flower Color'
+										secondary={isClicked.flower_color}
+									/>
+								</ListItem>
+								<ListItem>
+									<ListItemAvatar>
+										<EmojiNature />
+									</ListItemAvatar>
+									<ListItemText
+										primary='Associated Wildlife'
+										secondary={isClicked.associated_wildlife}
+									/>
+								</ListItem>
+								<ListItem>
+									<ListItemAvatar>
+										<WbSunny />
+									</ListItemAvatar>
+									<ListItemText
+										primary='Bloom Time'
+										secondary={isClicked.bloom_time}
+									/>
+								</ListItem>
+							</List>
+						</Typography>
+					</CardContent>
 				</DialogContent>
 			</Dialog>
 		</div>
@@ -223,12 +274,12 @@ export default function App() {
 				<SearchBar onSearch={setSearchValue} value={searchValue} />
 
 				<div>
-					{loadingPlantData ? (
+					{loadingData === true ? (
 						<CircularProgress className={classes.loading} />
 					) : (
 						<>
-							{plantData &&
-								plantData
+							{plantsInfo &&
+								plantsInfo
 									.filter(filterNames)
 									.slice((page - 1) * itemsPerPage, page * itemsPerPage)
 									.map(plants => {
@@ -263,7 +314,7 @@ export default function App() {
 																	<ListItem>
 																		<ListItemAvatar>
 																			<Avatar>
-																				<EcoIcon />
+																				<Eco />
 																			</Avatar>
 																		</ListItemAvatar>
 																		<ListItemText
@@ -274,7 +325,7 @@ export default function App() {
 																	<ListItem>
 																		<ListItemAvatar>
 																			<Avatar>
-																				<ColorLensIcon />
+																				<ColorLens />
 																			</Avatar>
 																		</ListItemAvatar>
 																		<ListItemText
@@ -285,7 +336,7 @@ export default function App() {
 																	<ListItem>
 																		<ListItemAvatar>
 																			<Avatar>
-																				<OpacityIcon />
+																				<Opacity />
 																			</Avatar>
 																		</ListItemAvatar>
 																		<ListItemText
@@ -299,7 +350,6 @@ export default function App() {
 																		size='small'
 																		onClick={handleClickOpen}
 																		className={classes.learnMoreBtn}
-																		value={plants.homeNewsId}
 																	>
 																		Learn More
 																	</Button>
