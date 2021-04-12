@@ -21,7 +21,6 @@ import {
 	Dialog,
 	DialogContent,
 	IconButton,
-	withStyles,
 } from '@material-ui/core'
 import PlantImages from './util/plantImage'
 import Pagination from '@material-ui/lab/Pagination'
@@ -108,12 +107,15 @@ const useStyles = makeStyles(theme => ({
 		color: '#78935d',
 		fontWeight: 500,
 	},
-	closeButton: {
-		position: 'absolute',
-		float: 'right',
-		marginTop: '5px',
-	},
 	pagination: {
+		margin: '10px',
+	},
+	dialogTitle: {
+		display: 'inline-block',
+		margin: '20px',
+	},
+	closeBtn: {
+		float: 'right',
 		margin: '10px',
 	},
 }))
@@ -168,29 +170,27 @@ export default function App() {
 		setOpen(false)
 	}
 
-	const DialogTitle = withStyles()(props => {
-		const { children, classes, onClose } = props
+	const DialogTitle = () => {
 		return (
 			<div>
-				<Typography variant='h6'>{children}</Typography>
-				{onClose ? (
+				<Typography className={classes.dialogTitle} variant='h6'>
+					{isClicked.common_name}
+				</Typography>
+				{handleClose ? (
 					<IconButton
+						className={classes.closeBtn}
 						aria-label='close'
-						className={classes.closeButton}
-						onClick={onClose}
+						onClick={handleClose}
 					>
 						<Close />
 					</IconButton>
 				) : null}
 			</div>
 		)
-	})
+	}
 
 	const plantInfo = (
 		<div>
-			<Button variant='outlined' color='primary' onClick={handleClickOpen}>
-				Open dialog
-			</Button>
 			<Dialog
 				onClose={handleClose}
 				aria-labelledby='customized-dialog-title'
