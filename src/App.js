@@ -129,6 +129,7 @@ export default function App() {
 	const [plantsInfo, setPlantsInfo] = useState([])
 	const [isClicked, setIsClicked] = useState([])
 	const [loadingData, setLoadingData] = useState(false)
+	const [product, setProduct] = React.useState(null)
 
 	useEffect(() => {
 		const fetchPlantData = async () => {
@@ -148,7 +149,6 @@ export default function App() {
 		Math.ceil(plantsInfo && plantsInfo.length / itemsPerPage)
 	)
 
-	console.log(plantsInfo)
 	const filterNames = ({ common_name }) => {
 		return (
 			common_name &&
@@ -160,21 +160,24 @@ export default function App() {
 		setPage(value)
 	}
 
-	const handleClickOpen = id => {
+	const handleClickOpen = (event, item) => {
 		setOpen(true)
+		event.persist()
+		setProduct(item)
+		console.log(item)
 		setIsClicked(plantsInfo.find(x => x.latin_name))
-		console.log(plantsInfo.find(x => x.latin_name))
 	}
 
+	console.log(product)
 	const handleClose = () => {
 		setOpen(false)
 	}
 
-	const DialogTitle = () => {
+	const DialogTitle = product => {
 		return (
 			<div>
 				<Typography className={classes.dialogTitle} variant='h6'>
-					{isClicked.common_name}
+					{product.common_name}
 				</Typography>
 				{handleClose ? (
 					<IconButton
@@ -189,67 +192,6 @@ export default function App() {
 		)
 	}
 
-	const plantInfo = (
-		<div>
-			<Dialog
-				onClose={handleClose}
-				aria-labelledby='customized-dialog-title'
-				open={open}
-			>
-				<DialogTitle id='customized-dialog-title' onClose={handleClose}>
-					{isClicked.common_name}
-				</DialogTitle>
-				<DialogContent dividers>
-					<CardContent>
-						<Typography gutterBottom variant='h5' component='h2'>
-							{isClicked.plant_type}
-						</Typography>
-						<Typography variant='body2' color='textSecondary' component='p'>
-							<List>
-								<ListItem>
-									<ListItemAvatar>
-										<Eco />
-									</ListItemAvatar>
-									<ListItemText
-										primary='Type'
-										secondary={isClicked.plant_type}
-									/>
-								</ListItem>
-								<ListItem>
-									<ListItemAvatar>
-										<LocalFlorist />
-									</ListItemAvatar>
-									<ListItemText
-										primary='Flower Color'
-										secondary={isClicked.flower_color}
-									/>
-								</ListItem>
-								<ListItem>
-									<ListItemAvatar>
-										<EmojiNature />
-									</ListItemAvatar>
-									<ListItemText
-										primary='Associated Wildlife'
-										secondary={isClicked.associated_wildlife}
-									/>
-								</ListItem>
-								<ListItem>
-									<ListItemAvatar>
-										<WbSunny />
-									</ListItemAvatar>
-									<ListItemText
-										primary='Bloom Time'
-										secondary={isClicked.bloom_time}
-									/>
-								</ListItem>
-							</List>
-						</Typography>
-					</CardContent>
-				</DialogContent>
-			</Dialog>
-		</div>
-	)
-
 	return (
 		<div className={classes.root}>
 			<AppBar className={classes.appBar} position='static'>
@@ -259,125 +201,192 @@ export default function App() {
 					</Typography>
 				</Toolbar>
 			</AppBar>
-			<div className={classes.root}>
-				<Typography className={classes.paperTitle}>Plant Finder</Typography>
-				<Typography className={classes.paperSubTitle}>
-					A resource for gardeners, designers, ecologists <br /> and anyone who
-					is interested in greening neighborhoods, <br /> enhancing our urban
-					ecology and surviving the drought.
-				</Typography>
-				<img
-					src={BackgroundImage}
-					className={classes.plantImage}
-					alt='plantImage'
-				/>
-				<SearchBar onSearch={setSearchValue} value={searchValue} />
+			<Typography className={classes.paperTitle}>Plant Finder</Typography>
+			<Typography className={classes.paperSubTitle}>
+				A resource for gardeners, designers, ecologists <br /> and anyone who is
+				interested in greening neighborhoods, <br /> enhancing our urban ecology
+				and surviving the drought.
+			</Typography>
+			<img
+				src={BackgroundImage}
+				className={classes.plantImage}
+				alt='plantImage'
+			/>
+			<SearchBar onSearch={setSearchValue} value={searchValue} />
 
-				<div>
-					{loadingData === true ? (
-						<CircularProgress className={classes.loading} />
-					) : (
-						<>
-							{plantsInfo &&
-								plantsInfo
-									.filter(filterNames)
-									.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-									.map(plants => {
-										return (
-											<div key={plants.id} className={classes.plantCard}>
-												<Card className={classes.cardImage}>
-													<CardActionArea>
-														<img
-															alt='plantImage'
-															key={plants.id}
-															src={
-																PlantImages[plants.common_name]
-																	? PlantImages[plants.common_name].image
-																	: 'https://i.imgur.com/VRaN8uw.jpg'
-															}
-															className={classes.thumbnail}
-														/>
-														<CardContent>
-															<Typography
-																gutterBottom
-																variant='h5'
-																component='h2'
+			{loadingData === true ? (
+				<CircularProgress className={classes.loading} />
+			) : (
+				<>
+					{plantsInfo &&
+						plantsInfo
+							.filter(filterNames)
+							.slice((page - 1) * itemsPerPage, page * itemsPerPage)
+							.map(product => {
+								return (
+									<span key={product.common_name} className={classes.plantCard}>
+										<Card className={classes.cardImage}>
+											<CardActionArea>
+												<img
+													alt='plantImage'
+													key={product.common_name}
+													src={
+														PlantImages[product.common_name]
+															? PlantImages[product.common_name].image
+															: 'https://i.imgur.com/VRaN8uw.jpg'
+													}
+													className={classes.thumbnail}
+												/>
+												<CardContent>
+													<Typography gutterBottom variant='h5' component='h2'>
+														{product.common_name}
+													</Typography>
+													<Typography
+														variant='body2'
+														color='textSecondary'
+														component='p'
+													>
+														<List className={classes.listIcons}>
+															<ListItem key={product.plant_type}>
+																<ListItemAvatar>
+																	<Avatar>
+																		<Eco />
+																	</Avatar>
+																</ListItemAvatar>
+																<ListItemText
+																	primary='Type'
+																	secondary={product.plant_type}
+																/>
+															</ListItem>
+															<ListItem key={product.flower_color}>
+																<ListItemAvatar>
+																	<Avatar>
+																		<ColorLens />
+																	</Avatar>
+																</ListItemAvatar>
+																<ListItemText
+																	primary='Color'
+																	secondary={product.flower_color}
+																/>
+															</ListItem>
+															<ListItem key={product.water_needs}>
+																<ListItemAvatar>
+																	<Avatar>
+																		<Opacity />
+																	</Avatar>
+																</ListItemAvatar>
+																<ListItemText
+																	primary='Water Needs'
+																	secondary={product.water_needs}
+																/>
+															</ListItem>
+														</List>
+														<CardActions>
+															<Button
+																size='small'
+																onClick={event =>
+																	handleClickOpen(event, product)
+																}
+																className={classes.learnMoreBtn}
 															>
-																{plants.common_name}
-															</Typography>
-															<Typography
-																variant='body2'
-																color='textSecondary'
-																component='p'
-															>
-																<List className={classes.listIcons}>
-																	<ListItem>
-																		<ListItemAvatar>
-																			<Avatar>
-																				<Eco />
-																			</Avatar>
-																		</ListItemAvatar>
-																		<ListItemText
-																			primary='Type'
-																			secondary={plants.plant_type}
-																		/>
-																	</ListItem>
-																	<ListItem>
-																		<ListItemAvatar>
-																			<Avatar>
-																				<ColorLens />
-																			</Avatar>
-																		</ListItemAvatar>
-																		<ListItemText
-																			primary='Color'
-																			secondary={plants.flower_color}
-																		/>
-																	</ListItem>
-																	<ListItem>
-																		<ListItemAvatar>
-																			<Avatar>
-																				<Opacity />
-																			</Avatar>
-																		</ListItemAvatar>
-																		<ListItemText
-																			primary='Water Needs'
-																			secondary={plants.water_needs}
-																		/>
-																	</ListItem>
-																</List>
-																<CardActions>
-																	<Button
-																		size='small'
-																		onClick={handleClickOpen}
-																		className={classes.learnMoreBtn}
-																	>
-																		Learn More
-																	</Button>
-																</CardActions>
-															</Typography>
-														</CardContent>
-													</CardActionArea>
-												</Card>
-											</div>
-										)
-									})}
+																Learn More
+															</Button>
+														</CardActions>
+													</Typography>
+												</CardContent>
+											</CardActionArea>
+										</Card>
+									</span>
+								)
+							})}
+					<div>
+						<Pagination
+							count={noOfPages}
+							page={page}
+							onChange={handleChange}
+							defaultPage={1}
+							size='large'
+							showFirstButton
+							showLastButton
+							className={classes.pagination}
+						/>
+					</div>
+					{open && product && (
+						<Dialog
+							key={product}
+							onClose={handleClose}
+							aria-labelledby='customized-dialog-title'
+							open={open}
+						>
 							<div>
-								<Pagination
-									count={noOfPages}
-									page={page}
-									onChange={handleChange}
-									defaultPage={1}
-									size='large'
-									showFirstButton
-									showLastButton
-									className={classes.pagination}
-								/>
+								<Typography className={classes.dialogTitle} variant='h6'>
+									{product.common_name}
+								</Typography>
+								{handleClose ? (
+									<IconButton
+										className={classes.closeBtn}
+										aria-label='close'
+										onClick={handleClose}
+									>
+										<Close />
+									</IconButton>
+								) : null}
 							</div>
-							{open && plantInfo}
-						</>
+							<DialogContent dividers>
+								<CardContent>
+									<Typography gutterBottom variant='h5' component='h2'>
+										{product.plant_type}
+									</Typography>
+									<Typography
+										variant='body2'
+										color='textSecondary'
+										component='p'
+									>
+										<List>
+											<ListItem key={product.plant_type}>
+												<ListItemAvatar>
+													<Eco />
+												</ListItemAvatar>
+												<ListItemText
+													primary='Type'
+													secondary={product.plant_type}
+												/>
+											</ListItem>
+											<ListItem key={product.flower_color}>
+												<ListItemAvatar>
+													<LocalFlorist />
+												</ListItemAvatar>
+												<ListItemText
+													primary='Flower Color'
+													secondary={product.flower_color}
+												/>
+											</ListItem>
+											<ListItem key={product.associated_wildlife}>
+												<ListItemAvatar>
+													<EmojiNature />
+												</ListItemAvatar>
+												<ListItemText
+													primary='Associated Wildlife'
+													secondary={product.associated_wildlife}
+												/>
+											</ListItem>
+											<ListItem key={product.bloom_time}>
+												<ListItemAvatar>
+													<WbSunny />
+												</ListItemAvatar>
+												<ListItemText
+													primary='Bloom Time'
+													secondary={product.bloom_time}
+												/>
+											</ListItem>
+										</List>
+									</Typography>
+								</CardContent>
+							</DialogContent>
+						</Dialog>
 					)}
-				</div>
-			</div>
+				</>
+			)}
 		</div>
 	)
 }
