@@ -242,7 +242,11 @@ export default function App() {
 																</ListItemAvatar>
 																<ListItemText
 																	primary='Color'
-																	secondary={plants.flower_color}
+																	secondary={
+																		!plants.flower_color === null
+																			? plants.flower_color
+																			: 'Not Available'
+																	}
 																/>
 															</ListItem>
 															<ListItem key={plants.water_needs}>
