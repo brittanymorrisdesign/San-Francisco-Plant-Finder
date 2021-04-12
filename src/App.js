@@ -97,6 +97,10 @@ const useStyles = makeStyles(theme => ({
 		height: '350px',
 		width: '100%',
 	},
+	dialogThumbnail: {
+		height: '80%',
+		width: '100%',
+	},
 	plantCard: {
 		display: 'inline-block',
 		marginTop: '20px',
@@ -311,7 +315,22 @@ export default function App() {
 								) : null}
 							</div>
 							<DialogContent dividers>
-								<Typography gutterBottom variant='h5' component='h2'>
+								<img
+									alt='plantImage'
+									key={plant.common_name}
+									src={
+										PlantImages[plant.common_name]
+											? PlantImages[plant.common_name].image
+											: 'https://i.imgur.com/VRaN8uw.jpg'
+									}
+									className={classes.dialogThumbnail}
+								/>
+								<Typography
+									gutterBottom
+									variant='h6'
+									component='h2'
+									style={{ marginTop: '15px' }}
+								>
 									{plant.plant_type}
 								</Typography>
 								<Typography variant='body2' color='textSecondary' component='p'>
