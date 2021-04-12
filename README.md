@@ -4,6 +4,8 @@ The San Francisco Plant Finder is a resource for gardeners, designers, ecologist
 Github Page: https://github.com/brittanymorrisdesign/San-Francisco-Plant-Finder </br>
 Live Demo: </br>
 
+![Plant_Finder_1](https://user-images.githubusercontent.com/44029053/114455231-80589780-9ba9-11eb-89ec-d47c64b8663b.png)
+
 # Data Source
 https://data.sfgov.org/Energy-and-Environment/San-Francisco-Plant-Finder-Data/vmnk-skih
 
