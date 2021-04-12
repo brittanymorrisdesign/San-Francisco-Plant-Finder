@@ -243,7 +243,7 @@ export default function App() {
 																<ListItemText
 																	primary='Color'
 																	secondary={
-																		!plants.flower_color === null
+																		typeof plants.flower_color !== 'undefined'
 																			? plants.flower_color
 																			: 'Not Available'
 																	}
