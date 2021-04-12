@@ -52,9 +52,9 @@ const useStyles = makeStyles(theme => ({
 		textAlign: 'center',
 		position: 'absolute',
 		width: '100%',
-		marginTop: '10%',
+		marginTop: '9%',
 		color: '#78935d',
-		fontSize: '3vw',
+		fontSize: '3.25vw',
 		fontWeight: 'semi-bold',
 	},
 	paperSubTitle: {
@@ -64,7 +64,7 @@ const useStyles = makeStyles(theme => ({
 		width: '100%',
 		marginTop: '15%',
 		color: '#707066',
-		fontSize: '1.10vw',
+		fontSize: '1.12vw',
 	},
 	plantImage: {
 		width: '100%',
@@ -331,7 +331,11 @@ export default function App() {
 											</ListItemAvatar>
 											<ListItemText
 												primary='Flower Color'
-												secondary={plant.flower_color}
+												secondary={
+													typeof plant.flower_color !== 'undefined'
+														? plant.flower_color.replace(/;/g, ', ')
+														: 'Not Available'
+												}
 											/>
 										</ListItem>
 										<ListItem key={plant.associated_wildlife}>
@@ -340,7 +344,11 @@ export default function App() {
 											</ListItemAvatar>
 											<ListItemText
 												primary='Associated Wildlife'
-												secondary={plant.associated_wildlife}
+												secondary={
+													typeof plant.associated_wildlife !== 'undefined'
+														? plant.associated_wildlife.replace(/;/g, ', ')
+														: 'Not Available'
+												}
 											/>
 										</ListItem>
 										<ListItem key={plant.bloom_time}>
@@ -349,7 +357,11 @@ export default function App() {
 											</ListItemAvatar>
 											<ListItemText
 												primary='Bloom Time'
-												secondary={plant.bloom_time}
+												secondary={
+													typeof plant.boom_time !== 'undefined'
+														? plant.boom_time.replace(/;/g, ', ')
+														: 'Not Available'
+												}
 											/>
 										</ListItem>
 									</List>
