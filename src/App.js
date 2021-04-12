@@ -127,9 +127,8 @@ export default function App() {
 	const itemsPerPage = 9
 	const [page, setPage] = useState(1)
 	const [plantsInfo, setPlantsInfo] = useState([])
-	const [isClicked, setIsClicked] = useState([])
 	const [loadingData, setLoadingData] = useState(false)
-	const [product, setProduct] = React.useState(null)
+	const [plant, setPlant] = useState(null)
 
 	useEffect(() => {
 		const fetchPlantData = async () => {
@@ -162,34 +161,11 @@ export default function App() {
 
 	const handleClickOpen = (event, item) => {
 		setOpen(true)
-		event.persist()
-		setProduct(item)
-		console.log(item)
-		setIsClicked(plantsInfo.find(x => x.latin_name))
+		setPlant(item)
 	}
 
-	console.log(product)
 	const handleClose = () => {
 		setOpen(false)
-	}
-
-	const DialogTitle = product => {
-		return (
-			<div>
-				<Typography className={classes.dialogTitle} variant='h6'>
-					{product.common_name}
-				</Typography>
-				{handleClose ? (
-					<IconButton
-						className={classes.closeBtn}
-						aria-label='close'
-						onClick={handleClose}
-					>
-						<Close />
-					</IconButton>
-				) : null}
-			</div>
-		)
 	}
 
 	return (
@@ -222,24 +198,24 @@ export default function App() {
 						plantsInfo
 							.filter(filterNames)
 							.slice((page - 1) * itemsPerPage, page * itemsPerPage)
-							.map(product => {
+							.map(plants => {
 								return (
-									<span key={product.common_name} className={classes.plantCard}>
+									<span key={plants.common_name} className={classes.plantCard}>
 										<Card className={classes.cardImage}>
 											<CardActionArea>
 												<img
 													alt='plantImage'
-													key={product.common_name}
+													key={plants.common_name}
 													src={
-														PlantImages[product.common_name]
-															? PlantImages[product.common_name].image
+														PlantImages[plants.common_name]
+															? PlantImages[plants.common_name].image
 															: 'https://i.imgur.com/VRaN8uw.jpg'
 													}
 													className={classes.thumbnail}
 												/>
 												<CardContent>
 													<Typography gutterBottom variant='h5' component='h2'>
-														{product.common_name}
+														{plants.common_name}
 													</Typography>
 													<Typography
 														variant='body2'
@@ -247,7 +223,7 @@ export default function App() {
 														component='p'
 													>
 														<List className={classes.listIcons}>
-															<ListItem key={product.plant_type}>
+															<ListItem key={plants.plant_type}>
 																<ListItemAvatar>
 																	<Avatar>
 																		<Eco />
@@ -255,10 +231,10 @@ export default function App() {
 																</ListItemAvatar>
 																<ListItemText
 																	primary='Type'
-																	secondary={product.plant_type}
+																	secondary={plants.plant_type}
 																/>
 															</ListItem>
-															<ListItem key={product.flower_color}>
+															<ListItem key={plants.flower_color}>
 																<ListItemAvatar>
 																	<Avatar>
 																		<ColorLens />
@@ -266,10 +242,10 @@ export default function App() {
 																</ListItemAvatar>
 																<ListItemText
 																	primary='Color'
-																	secondary={product.flower_color}
+																	secondary={plants.flower_color}
 																/>
 															</ListItem>
-															<ListItem key={product.water_needs}>
+															<ListItem key={plants.water_needs}>
 																<ListItemAvatar>
 																	<Avatar>
 																		<Opacity />
@@ -277,7 +253,7 @@ export default function App() {
 																</ListItemAvatar>
 																<ListItemText
 																	primary='Water Needs'
-																	secondary={product.water_needs}
+																	secondary={plants.water_needs}
 																/>
 															</ListItem>
 														</List>
@@ -285,7 +261,7 @@ export default function App() {
 															<Button
 																size='small'
 																onClick={event =>
-																	handleClickOpen(event, product)
+																	handleClickOpen(event, plants)
 																}
 																className={classes.learnMoreBtn}
 															>
@@ -311,16 +287,16 @@ export default function App() {
 							className={classes.pagination}
 						/>
 					</div>
-					{open && product && (
+					{open && plant && (
 						<Dialog
-							key={product}
+							key={plant}
 							onClose={handleClose}
 							aria-labelledby='customized-dialog-title'
 							open={open}
 						>
 							<div>
 								<Typography className={classes.dialogTitle} variant='h6'>
-									{product.common_name}
+									{plant.common_name}
 								</Typography>
 								{handleClose ? (
 									<IconButton
@@ -333,55 +309,49 @@ export default function App() {
 								) : null}
 							</div>
 							<DialogContent dividers>
-								<CardContent>
-									<Typography gutterBottom variant='h5' component='h2'>
-										{product.plant_type}
-									</Typography>
-									<Typography
-										variant='body2'
-										color='textSecondary'
-										component='p'
-									>
-										<List>
-											<ListItem key={product.plant_type}>
-												<ListItemAvatar>
-													<Eco />
-												</ListItemAvatar>
-												<ListItemText
-													primary='Type'
-													secondary={product.plant_type}
-												/>
-											</ListItem>
-											<ListItem key={product.flower_color}>
-												<ListItemAvatar>
-													<LocalFlorist />
-												</ListItemAvatar>
-												<ListItemText
-													primary='Flower Color'
-													secondary={product.flower_color}
-												/>
-											</ListItem>
-											<ListItem key={product.associated_wildlife}>
-												<ListItemAvatar>
-													<EmojiNature />
-												</ListItemAvatar>
-												<ListItemText
-													primary='Associated Wildlife'
-													secondary={product.associated_wildlife}
-												/>
-											</ListItem>
-											<ListItem key={product.bloom_time}>
-												<ListItemAvatar>
-													<WbSunny />
-												</ListItemAvatar>
-												<ListItemText
-													primary='Bloom Time'
-													secondary={product.bloom_time}
-												/>
-											</ListItem>
-										</List>
-									</Typography>
-								</CardContent>
+								<Typography gutterBottom variant='h5' component='h2'>
+									{plant.plant_type}
+								</Typography>
+								<Typography variant='body2' color='textSecondary' component='p'>
+									<List>
+										<ListItem key={plant.plant_type}>
+											<ListItemAvatar>
+												<Eco />
+											</ListItemAvatar>
+											<ListItemText
+												primary='Type'
+												secondary={plant.plant_type}
+											/>
+										</ListItem>
+										<ListItem key={plant.flower_color}>
+											<ListItemAvatar>
+												<LocalFlorist />
+											</ListItemAvatar>
+											<ListItemText
+												primary='Flower Color'
+												secondary={plant.flower_color}
+											/>
+										</ListItem>
+										<ListItem key={plant.associated_wildlife}>
+											<ListItemAvatar>
+												<EmojiNature />
+											</ListItemAvatar>
+											<ListItemText
+												primary='Associated Wildlife'
+												secondary={plant.associated_wildlife}
+											/>
+										</ListItem>
+										<ListItem key={plant.bloom_time}>
+											<ListItemAvatar>
+												<WbSunny />
+											</ListItemAvatar>
+											<ListItemText
+												primary='Bloom Time'
+												secondary={plant.bloom_time}
+											/>
+										</ListItem>
+									</List>
+								</Typography>
 							</DialogContent>
 						</Dialog>
 					)}
