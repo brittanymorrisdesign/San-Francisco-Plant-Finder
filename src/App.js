@@ -244,7 +244,7 @@ export default function App() {
 																	primary='Color'
 																	secondary={
 																		typeof plants.flower_color !== 'undefined'
-																			? plants.flower_color
+																			? plants.flower_color.replace(/;/g, ', ')
 																			: 'Not Available'
 																	}
 																/>
