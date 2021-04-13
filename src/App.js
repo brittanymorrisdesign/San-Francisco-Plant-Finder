@@ -293,6 +293,7 @@ export default function App() {
 							className={classes.pagination}
 						/>
 					</div>
+
 					{open && plant && (
 						<Dialog
 							key={plant}
