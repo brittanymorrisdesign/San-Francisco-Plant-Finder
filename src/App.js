@@ -146,19 +146,11 @@ export default function App() {
 		fetchPlantData()
 	}, [])
 
-	const [noOfPages] = useState(
-		Math.ceil(plantsInfo && plantsInfo.length / itemsPerPage)
-	)
-
 	const filterNames = ({ common_name }) => {
 		return (
 			common_name &&
 			common_name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1
 		)
-	}
-
-	const handleChange = value => {
-		setPage(value)
 	}
 
 	const handleClickOpen = (event, item) => {
@@ -283,11 +275,11 @@ export default function App() {
 							})}
 					<div>
 						<Pagination
-							count={noOfPages}
+							count={Math.ceil(plantsInfo.length / itemsPerPage)}
 							page={page}
-							onChange={handleChange}
+							onChange={(e, value) => setPage(value)}
 							defaultPage={1}
-							size='large'
+							size='medium'
 							showFirstButton
 							showLastButton
 							className={classes.pagination}
