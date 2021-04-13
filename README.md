@@ -2,7 +2,7 @@
 The San Francisco Plant Finder is a resource for gardeners, designers, ecologists and anyone who is interested in greening neighborhoods, enhancing our urban ecology and surviving the drought. The Plant Finder recommends appropriate habitat-building plants for sidewalks, gardens and roofs that are adapted to San Francisco's unique environment and climate.
 
 Github Page: https://github.com/brittanymorrisdesign/San-Francisco-Plant-Finder </br>
-Live Demo: </br>
+Live Demo: </br> https://thawing-mountain-07500.herokuapp.com/
 
 ![Plant_Finder_1](https://user-images.githubusercontent.com/44029053/114455231-80589780-9ba9-11eb-89ec-d47c64b8663b.png)
 
@@ -14,7 +14,6 @@ A React-based Plant Finder Search app with React components, helper/util functio
 
 # Technologies Used
 * React.js
-* Node.js
 * JavaScript
 * HTML
 * CSS
