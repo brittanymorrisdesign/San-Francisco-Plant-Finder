@@ -120,6 +120,15 @@ const useStyles = makeStyles(theme => ({
 		float: 'right',
 		margin: '10px',
 	},
+	icons: {
+		color: '#78935d',
+	},
+	familyName: {
+		marginTop: '15px',
+		color: 'grey',
+		fontStyle: 'italic',
+		fontSize: '16px',
+	},
 }))
 
 export default function App() {
@@ -318,19 +327,14 @@ export default function App() {
 									}
 									className={classes.dialogThumbnail}
 								/>
-								<Typography
-									gutterBottom
-									variant='h6'
-									component='h2'
-									style={{ marginTop: '15px' }}
-								>
-									{plant.plant_type}
+								<Typography gutterBottom className={classes.familyName}>
+									Family Name: {plant.family_name}
 								</Typography>
 								<Typography variant='body2' color='textSecondary' component='p'>
 									<List>
 										<ListItem key={plant.plant_type}>
 											<ListItemAvatar>
-												<Eco />
+												<Eco className={classes.icons} />
 											</ListItemAvatar>
 											<ListItemText
 												primary='Type'
@@ -339,7 +343,7 @@ export default function App() {
 										</ListItem>
 										<ListItem key={plant.flower_color}>
 											<ListItemAvatar>
-												<LocalFlorist />
+												<LocalFlorist className={classes.icons} />
 											</ListItemAvatar>
 											<ListItemText
 												primary='Flower Color'
@@ -352,7 +356,7 @@ export default function App() {
 										</ListItem>
 										<ListItem key={plant.associated_wildlife}>
 											<ListItemAvatar>
-												<EmojiNature />
+												<EmojiNature className={classes.icons} />
 											</ListItemAvatar>
 											<ListItemText
 												primary='Associated Wildlife'
@@ -365,7 +369,7 @@ export default function App() {
 										</ListItem>
 										<ListItem key={plant.bloom_time}>
 											<ListItemAvatar>
-												<WbSunny />
+												<WbSunny className={classes.icons} />
 											</ListItemAvatar>
 											<ListItemText
 												primary='Bloom Time'
